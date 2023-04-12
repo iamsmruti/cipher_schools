@@ -50,5 +50,5 @@ export const loginUser = async (req, res) => {
         email: user.email
     }, process.env.TOKEN_SECRET)
 
-    return token
+    res.json(token)
 }

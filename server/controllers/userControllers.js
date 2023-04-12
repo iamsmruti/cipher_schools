@@ -5,12 +5,12 @@ export const userDetails = async (req, res) => {
 
     try {
         const user = await User.findById({_id: req.user.id})
-        return user
+        res.json(user)
     } catch (err) {
         res.status(500).json(err)
     }
 }
 
 export const updateUserDetails = async (req, res) => {
-
+    
 }
