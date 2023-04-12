@@ -5,7 +5,7 @@ const Layout = ({children}) => {
   return (
     <>
         <TopNav />
-        {children}
+        <div className='ml-[70px]'>{children}</div>
     </>
   )
 }

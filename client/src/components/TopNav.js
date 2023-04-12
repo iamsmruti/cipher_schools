@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // React Icons
 import { HiMenuAlt2 } from 'react-icons/hi'
@@ -8,6 +8,7 @@ import { FaAngleDown } from 'react-icons/fa'
 
 import SearchComponent from './SearchComponent'
 import NotificationIcon from './NotificationIcon'
+import SideNav from './SideNav'
 
 const TopNav = () => {
   const [dropDown, setDropDown] = useState(false)
@@ -16,12 +17,23 @@ const TopNav = () => {
     setDropDown(!dropDown)
   }
 
+  const [navState, setNavState] = useState(false)
+
+  const handleNavState = () => {
+    setNavState(!navState)
+  }
+
+  useEffect(() => {
+    console.log(navState)
+  }, [navState])
+
   return (
+    <>
     <div className='flex justify-between pr-6 py-3 border-b-slate-300 border-solid border-[0.5px]'>
 
        {/* Left Nav */}
         <div className='flex items-center'>
-          <div className='text-[30px] px-6'>
+          <div onClick={handleNavState} className='text-[30px] px-6 cursor-pointer'>
             <HiMenuAlt2 />
           </div>
 
@@ -66,6 +78,10 @@ const TopNav = () => {
           </div>
         </div>
     </div>
+    <div className='absolute left-0 z-10 pt-5'>
+      <SideNav navState={navState}/>
+    </div>
+    </>
   )
 }
 
