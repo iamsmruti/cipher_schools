@@ -1,35 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../constants'
 
-const LoginModal = () => {
-  return (
-    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-2xl max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Terms of Service
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
+const LoginModal = ({setShowModal, setModalState}) => {
+        
+    const navigate = useNavigate()
+
+    const customInput = {
+      background: 'black',
+      marginBottom: '0.7rem',
+      padding: '0.5rem 1rem',
+      border: 'none',
+      outline: 'none',
+      width: '500px',
+      borderRadius: '10px'
+    }
+        const [email, setEmail] = useState('')
+        const [password, setPassword] = useState('')
+
+    const handleSubmitLogin = () => {
+        console.log('first')
+
+        axios.post(`${API_URL}/api/auth/login`, {
+            password: password,
+            email: email
+        }).then((res) => {
+            console.log(res)
+            navigate('/profile')
+        }).catch((err) => {
+            console.log(err.message)
+        })
+    }
+    return (
+        <>
+            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none" >
+                <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                    {/*content*/}
+                    <div className="border-0 rounded-[30px] shadow-lg relative flex flex-col w-full bg-[#272c36] outline-none focus:outline-none text-white">
+                    {/*header*/}
+                    <div className="flex items-start justify-between p-5">
+                        <h3 className="text-[28px]">
+                        Signin
+                        </h3>
+                        <button
+                        className="p-1 ml-auto bg-transparent border-0 text-black float-right mt-[-10px] leading-none font-semibold outline-none focus:outline-none"
+                        onClick={() => setShowModal(false)}
+                        >
+                        <span className="bg-transparent text-slate-500 h-6 w-6 text-[40px] block outline-none focus:outline-none">
+                            ×
+                        </span>
+                        </button>
+                    </div>
+                    {/*body*/}
+                    <div className='flex flex-col px-[150px] text-center items-center pb-10'>
+                        <div className='flex'>
+                        <img className='w-[35px]' src='https://www.cipherschools.com/static/media/Cipherschools_icon@2x.3b571d743ffedc84d039.png'/>
+                        <p className='font-semibold text-[24px] ml-3'>CipherSchools</p>
+                        </div>
+
+                        <p className='mt-5'>Hey, Welcome!</p>
+                        <p className='text-[14px] mt-1 text-slate-400'>Please provide your email and password to signin</p>
+
+                        <div className='mt-10'></div>
+                        <input onChange={(e) => setEmail(e.target.value)} style={customInput} placeholder='Email ID'/>
+                        <input onChange={(e) => setPassword(e.target.value)} type='password' style={customInput} placeholder='Password'/>
+                        <p className='text-right w-[100%] mr-[-30px] text-primary'>Forgot Password ?</p>
+
+                        <button onClick={handleSubmitLogin} className='bg-primary w-[105%] py-2 rounded-md mt-5'>Signin</button>
+
+                        <p>Don't have an account ? <button className='text-primary ml-2 mt-3' onClick={() => setModalState('register')}>Get Started</button></p>
+                    </div>
+                    {/*footer*/}
+                    </div>
+                </div>
             </div>
-            <div class="p-6 space-y-6">
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                </p>
-                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                </p>
-            </div>
-            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
-                <button data-modal-hide="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
-            </div>
-        </div>
-    </div>
-</div>
-  )
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+    )
 }
 
 export default LoginModal
